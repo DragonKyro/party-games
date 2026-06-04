@@ -1,0 +1,53 @@
+.pg-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  transition: filter 0.15s ease, transform 0.05s ease;
+  user-select: none;
+}
+
+.pg-btn:hover:not(:disabled) {
+  filter: brightness(1.1);
+}
+.pg-btn:active:not(:disabled) {
+  transform: translateY(1px);
+}
+.pg-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.pg-btn-sm {
+  padding: 4px 10px;
+  font-size: 13px;
+}
+.pg-btn-md {
+  padding: 8px 16px;
+  font-size: 14px;
+}
+.pg-btn-lg {
+  padding: 12px 24px;
+  font-size: 16px;
+}
+
+.pg-btn-primary {
+  background: var(--color-accent);
+  color: var(--color-accent-text);
+}
+.pg-btn-secondary {
+  background: var(--color-bg-3);
+  color: var(--color-text);
+  border-color: var(--color-border);
+}
+.pg-btn-ghost {
+  background: transparent;
+  color: var(--color-text);
+  border-color: var(--color-border);
+}
+.pg-btn-danger {
+  background: var(--color-danger);
+  color: white;
+}

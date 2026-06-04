@@ -1,0 +1,52 @@
+.pg-game-shell {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+.pg-game-shell-header {
+  display: flex;
+  align-items: center;
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-bg-2);
+}
+
+.pg-game-shell-title {
+  flex: 1;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.pg-game-shell-body {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  min-height: 0;
+}
+
+.pg-game-shell-main {
+  padding: var(--space-4);
+  overflow-y: auto;
+}
+
+.pg-game-shell-side {
+  padding: var(--space-3);
+  border-left: 1px solid var(--color-border);
+  background: var(--color-bg);
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+@media (max-width: 800px) {
+  .pg-game-shell-body {
+    grid-template-columns: 1fr;
+  }
+  .pg-game-shell-side {
+    border-left: none;
+    border-top: 1px solid var(--color-border);
+    min-height: 200px;
+  }
+}

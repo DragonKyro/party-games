@@ -1,0 +1,38 @@
+.pg-player-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.pg-player-list-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 8px 12px;
+  background: var(--color-bg-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.pg-player-name {
+  flex: 1;
+  font-weight: 500;
+}
+
+.pg-tag {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 2px 6px;
+  border-radius: var(--radius-sm);
+  background: var(--color-bg-3);
+  color: var(--color-text-muted);
+}
+
+.pg-tag-me {
+  background: var(--color-accent);
+  color: var(--color-accent-text);
+}

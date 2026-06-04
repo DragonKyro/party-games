@@ -1,0 +1,23 @@
+.pg-tf {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.pg-tf-label {
+  font-size: 13px;
+  color: var(--color-text-muted);
+}
+
+.pg-tf-input {
+  padding: 8px 12px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-2);
+  color: var(--color-text);
+  outline: none;
+}
+
+.pg-tf-input:focus {
+  border-color: var(--color-accent);
+}
