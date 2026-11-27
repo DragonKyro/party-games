@@ -1,0 +1,89 @@
+.root {
+  display: grid;
+  gap: 16px;
+  animation: global(pg-rise-in) var(--dur-slow) var(--ease-out) both;
+}
+
+.head {
+  text-align: center;
+  display: grid;
+  gap: 6px;
+}
+
+.title {
+  font-size: clamp(1.6rem, 6vw, 2.2rem);
+  color: var(--accent);
+}
+
+.columns {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+}
+
+.team {
+  display: grid;
+  align-content: start;
+  gap: 10px;
+  padding: 14px;
+  border-radius: var(--radius-lg);
+  background: color-mix(in srgb, var(--c) 12%, var(--bg-2));
+  border: 2px solid color-mix(in srgb, var(--c) 55%, transparent);
+}
+
+.teamName {
+  color: var(--c);
+  font-size: 1.25rem;
+  text-align: center;
+}
+
+.members {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 6px;
+}
+
+.member {
+  width: 100%;
+  min-height: 40px;
+  border: 0;
+  border-radius: var(--radius);
+  background: var(--bg-1);
+  color: var(--text);
+  font: 800 0.95rem/1.1 var(--font-ui);
+  cursor: pointer;
+}
+.member:disabled { cursor: default; }
+.member:not(:disabled):hover { outline: 2px solid var(--c); }
+
+.me {
+  outline: 2px solid var(--c);
+}
+
+.empty {
+  color: var(--text-faint);
+  font-weight: 700;
+  text-align: center;
+  padding: 8px;
+}
+
+.actions {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.wait {
+  text-align: center;
+  color: var(--text-dim);
+  font-weight: 700;
+}
+
+.problem {
+  text-align: center;
+  color: var(--warn);
+  font-weight: 800;
+}

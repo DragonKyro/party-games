@@ -1,0 +1,651 @@
+/* ---- choosing ---- */
+.choose {
+  flex: 1;
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  gap: 16px;
+  text-align: center;
+  padding: 12px 0 24px;
+  animation: global(pg-rise-in) var(--dur-slow) var(--ease-out) both;
+}
+
+.chooseHead {
+  display: grid;
+  gap: 6px;
+}
+
+.chooseTitle {
+  font-size: clamp(1.9rem, 8vw, 2.8rem);
+  color: var(--accent);
+}
+
+.choices {
+  width: 100%;
+  max-width: 520px;
+  display: grid;
+  gap: 14px;
+}
+
+@media (min-width: 760px) {
+  .choices {
+    max-width: 920px;
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.choice {
+  min-height: 104px;
+  padding: 18px 16px;
+  border: 0;
+  border-radius: 10px;
+  background:
+    repeating-linear-gradient(transparent 0 26px, rgba(255, 107, 107, 0.16) 26px 28px),
+    var(--paper);
+  color: var(--paper-ink);
+  font: 400 clamp(1.7rem, 6.5vw, 2.3rem)/1.05 var(--font-hand);
+  overflow-wrap: anywhere;
+  box-shadow: var(--shadow-md), var(--lip);
+  transform: rotate(var(--r, 0deg));
+  transition:
+    transform var(--dur-med) var(--ease-spring),
+    opacity var(--dur-med);
+  cursor: pointer;
+}
+.choice:hover:not(:disabled),
+.choice:focus-visible {
+  transform: rotate(0deg) translateY(-4px) scale(1.03);
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+}
+.choice:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+.choicePicked:disabled {
+  opacity: 1;
+  outline: 4px solid var(--accent);
+  transform: rotate(0deg) scale(1.05);
+}
+
+/* ---- waiting for the pick ---- */
+.waiting {
+  display: grid;
+  justify-items: center;
+  gap: 12px;
+  text-align: center;
+  padding: 10px 0 20px;
+  animation: global(pg-rise-in) var(--dur-slow) var(--ease-out) both;
+}
+
+.waitArt {
+  width: 112px;
+  height: 84px;
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  background: var(--paper);
+  box-shadow: var(--shadow-md);
+  transform: rotate(-4deg);
+}
+
+.waitPencil {
+  font-size: 46px;
+  animation: global(pg-wiggle) 1.4s var(--ease-in-out) infinite;
+}
+
+.waitTitle {
+  font-size: clamp(1.7rem, 7vw, 2.6rem);
+}
+
+.waiting .scores {
+  width: 100%;
+  max-width: 560px;
+  text-align: left;
+}
+
+/* ---- the stage: canvas + side panel ---- */
+.stage {
+  display: grid;
+  gap: 14px;
+  align-items: start;
+}
+
+@media (min-width: 900px) {
+  .stage {
+    grid-template-columns: minmax(0, 1fr) minmax(290px, 350px);
+  }
+}
+
+/* Big screens (laptops on a TV): use more than the shell's max width. */
+@media (min-width: 1300px) {
+  .stage {
+    margin-inline: calc(50% - min(50vw - 24px, 880px));
+    grid-template-columns: minmax(0, 1fr) minmax(320px, 400px);
+  }
+}
+
+.main {
+  min-width: 0;
+  display: grid;
+  gap: 10px;
+}
+
+/* Fit the 4:3 canvas in the viewport height too (laptops and TVs). */
+.canvasWrap {
+  width: 100%;
+  max-width: max(300px, calc((100dvh - 200px) * 4 / 3));
+  margin: 0 auto;
+}
+
+.withTools {
+  max-width: max(300px, calc((100dvh - 330px) * 4 / 3));
+}
+
+.topBar {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 12px;
+  border-radius: var(--radius);
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+}
+
+.topCenter {
+  min-width: 0;
+  display: grid;
+  justify-items: center;
+  text-align: center;
+}
+
+.topRight {
+  display: grid;
+  justify-items: end;
+  gap: 6px;
+}
+
+.secret {
+  display: grid;
+  justify-items: center;
+  gap: 2px;
+  animation: global(pg-pop) var(--dur-med) var(--ease-spring) both;
+}
+
+.secretWord {
+  font: 700 clamp(1.5rem, 5.5vw, 2.4rem)/1.05 var(--font-display);
+  color: var(--accent);
+  overflow-wrap: anywhere;
+}
+
+.guessIt {
+  font: 700 clamp(1.3rem, 5vw, 2rem)/1.1 var(--font-display);
+  color: var(--text-dim);
+}
+
+.artistChip {
+  max-width: 9em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.peek {
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+.peeking {
+  --btn-bg: var(--accent);
+  --btn-fg: var(--accent-ink);
+}
+
+/* ---- hint blanks ---- */
+.hint {
+  display: grid;
+  justify-items: center;
+  gap: 4px;
+}
+
+.hintWords {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px 20px;
+}
+
+.hintWord {
+  display: flex;
+  gap: 5px;
+}
+
+.blank,
+.letter,
+.punct {
+  width: 1.05em;
+  height: 1.3em;
+  display: grid;
+  place-items: end center;
+  font: 700 clamp(1.3rem, 4.6vw, 2.1rem)/1 var(--font-display);
+}
+
+.blank {
+  border-bottom: 3px solid var(--text-dim);
+}
+
+.letter {
+  border-bottom: 3px solid var(--accent);
+  color: var(--accent);
+  animation: global(pg-pop) var(--dur-med) var(--ease-spring) both;
+}
+
+.punct {
+  width: auto;
+  color: var(--text-dim);
+}
+
+.hintCount {
+  font: 800 0.75rem/1 var(--font-ui);
+  color: var(--text-faint);
+  letter-spacing: 0.08em;
+}
+
+@media (min-width: 1200px) {
+  .blank,
+  .letter,
+  .punct {
+    font-size: 2.4rem;
+  }
+  .secretWord {
+    font-size: 2.8rem;
+  }
+}
+
+/* ---- side panel ---- */
+.side {
+  display: grid;
+  gap: 12px;
+  align-content: start;
+  min-width: 0;
+}
+
+.note {
+  padding: 10px 12px;
+  border-radius: var(--radius);
+  background: var(--bg-2);
+  color: var(--text-dim);
+  font-weight: 700;
+  text-align: center;
+}
+
+/* ---- typed feed ---- */
+.feed {
+  height: 190px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 10px;
+  border-radius: var(--radius);
+  background: var(--bg-1);
+  border: 1px solid var(--line);
+  overscroll-behavior: contain;
+}
+
+@media (min-width: 900px) {
+  .feed {
+    height: clamp(220px, calc(100dvh - 500px), 560px);
+  }
+}
+
+.feedEmpty {
+  margin: auto;
+  color: var(--text-faint);
+  font-weight: 700;
+}
+
+.line {
+  padding: 3px 8px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 0.98rem;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+  animation: global(pg-fade-in) var(--dur-fast) var(--ease-out) both;
+}
+
+.who {
+  color: var(--c);
+  font-weight: 900;
+}
+
+.text {
+  color: var(--text);
+}
+
+.lineSolved {
+  background: color-mix(in srgb, var(--success) 18%, transparent);
+  color: var(--success);
+  animation: global(pg-pop) var(--dur-med) var(--ease-spring) both;
+}
+
+.lineClose {
+  background: color-mix(in srgb, var(--warn) 16%, transparent);
+}
+
+.lineChat {
+  background: color-mix(in srgb, var(--success) 8%, transparent);
+}
+
+.closeTag {
+  margin-left: 6px;
+  padding: 1px 7px;
+  border-radius: var(--radius-pill);
+  background: var(--warn);
+  color: #2b1d00;
+  font-size: 0.75rem;
+  font-weight: 900;
+}
+
+.only {
+  margin-left: 6px;
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: var(--text-faint);
+  white-space: nowrap;
+}
+
+.plus {
+  font-family: var(--font-display);
+  color: var(--success);
+}
+
+.guessBox {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 8px;
+}
+
+/* ---- spoken: tap who got it ---- */
+.taps {
+  display: grid;
+  gap: 12px;
+  padding: 12px;
+  border-radius: var(--radius);
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+}
+
+.tapHint {
+  margin-top: 2px;
+  color: var(--text-dim);
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.tapGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(132px, 1fr));
+  gap: 8px;
+}
+
+.tap {
+  min-height: 58px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 12px;
+  border: 2px solid var(--line-strong);
+  background: var(--bg-1);
+  color: var(--text);
+  font: 800 1.02rem/1.1 var(--font-ui);
+  text-align: left;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition:
+    transform var(--dur-fast),
+    background var(--dur-fast),
+    border-color var(--dur-fast);
+}
+.tap:active {
+  transform: scale(0.97);
+}
+
+.tapOn {
+  border-color: var(--success);
+  background: color-mix(in srgb, var(--success) 20%, var(--bg-1));
+  animation: global(pg-pop) var(--dur-med) var(--ease-spring);
+}
+
+.tapDot {
+  flex: none;
+  width: 24px;
+  height: 24px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--c);
+  color: #160f2b;
+  font: 800 0.85rem/1 var(--font-display);
+}
+
+.tapName {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.shout {
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+  padding: 16px;
+  border-radius: var(--radius);
+  background: var(--bg-2);
+  text-align: center;
+}
+
+.shoutIcon {
+  font-size: 48px;
+  animation: global(pg-wiggle) 1.6s var(--ease-in-out) infinite;
+}
+
+.shoutTitle {
+  font-size: 1.6rem;
+  color: var(--accent);
+}
+
+.solvedList {
+  width: 100%;
+  margin: 6px 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 4px;
+  text-align: left;
+}
+.solvedList li {
+  padding: 6px 10px;
+  border-radius: 8px;
+  border-left: 4px solid var(--c);
+  background: var(--bg-1);
+  font-weight: 800;
+  animation: global(pg-pop) var(--dur-med) var(--ease-spring) both;
+}
+
+/* ---- reveal ---- */
+.reveal {
+  display: grid;
+  gap: 10px;
+  padding: 16px;
+  border-radius: var(--radius);
+  background: var(--bg-2);
+  border: 2px solid var(--accent);
+  text-align: center;
+  animation: global(pg-pop) var(--dur-med) var(--ease-spring) both;
+}
+
+.revealTitle {
+  font: 700 clamp(1.6rem, 6vw, 2.2rem)/1.1 var(--font-display);
+}
+
+.gainList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 4px;
+  text-align: left;
+}
+.gainList li {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  border-left: 4px solid var(--c);
+  background: var(--bg-1);
+  font-weight: 800;
+  animation: global(pg-rise-in) var(--dur-med) var(--ease-out) both;
+  animation-delay: calc(var(--i, 0) * 80ms);
+}
+.gainList b {
+  font-family: var(--font-display);
+  color: var(--success);
+}
+
+/* ---- scoreboard ---- */
+.scores {
+  margin: 0;
+  padding: 8px;
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 210px), 1fr));
+  gap: 4px;
+  border-radius: var(--radius);
+  background: var(--bg-2);
+}
+
+.scoreRow {
+  display: grid;
+  grid-template-columns: 1.4em 10px minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  border-radius: 10px;
+  font-weight: 800;
+}
+
+.me {
+  background: color-mix(in srgb, var(--accent) 14%, transparent);
+}
+
+.solvedRow .scoreName {
+  color: var(--success);
+}
+
+.place {
+  color: var(--text-faint);
+  font: 700 0.9rem/1 var(--font-display);
+  text-align: right;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--c);
+}
+
+.scoreName {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.gain {
+  font: 700 0.85rem/1 var(--font-display);
+  color: var(--success);
+  animation: global(pg-pop) var(--dur-med) var(--ease-spring) both;
+}
+
+.points {
+  font: 700 1.15rem/1 var(--font-display);
+  font-variant-numeric: tabular-nums;
+}
+
+.hostBar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding: 0 4px;
+}
+
+/* ---- results ---- */
+.awards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.award {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: var(--radius);
+  background: var(--bg-2);
+}
+
+.awardIcon {
+  font-size: 32px;
+}
+
+.awardText {
+  display: grid;
+  gap: 1px;
+}
+
+.allWords {
+  padding: 12px 14px;
+  border-radius: var(--radius);
+  background: var(--bg-2);
+}
+
+.allWords summary {
+  cursor: pointer;
+  font-weight: 800;
+}
+
+.allWords ul {
+  margin: 10px 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 6px;
+}
+
+.allWords li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 10px;
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.wordChip {
+  padding: 3px 10px;
+  border-radius: 6px;
+  background: var(--paper);
+  color: var(--paper-ink);
+  font: 400 1.1rem/1.2 var(--font-hand);
+}

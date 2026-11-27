@@ -1,0 +1,145 @@
+.root {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  text-align: center;
+  padding: 8px 0 24px;
+}
+
+.trophy {
+  font-size: 64px;
+  animation: global(pg-pop) 0.6s var(--ease-spring) both, global(pg-float) 4s 0.6s var(--ease-in-out) infinite;
+}
+
+.headline {
+  font-size: clamp(1.8rem, 7vw, 2.8rem);
+  color: var(--accent);
+}
+
+.subline {
+  color: var(--text-dim);
+  font-weight: 700;
+}
+
+.list {
+  list-style: none;
+  margin: 8px 0 0;
+  padding: 0;
+  width: 100%;
+  display: grid;
+  gap: 8px;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 44px 1fr auto;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-radius: var(--radius);
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+  text-align: left;
+}
+
+.first {
+  background: color-mix(in srgb, var(--c) 18%, var(--bg-2));
+  border-color: color-mix(in srgb, var(--c) 60%, transparent);
+}
+
+.you {
+  outline: 2px solid color-mix(in srgb, var(--accent) 70%, transparent);
+}
+
+.place {
+  font: 700 1.5rem/1 var(--font-display);
+  text-align: center;
+  color: var(--text-dim);
+}
+
+.who {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.name {
+  font: 800 1.1rem/1.2 var(--font-ui);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.youTag {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 2px 6px;
+  border-radius: var(--radius-pill);
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+.detail {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text-faint);
+}
+
+.bar {
+  display: block;
+  height: 6px;
+  border-radius: 3px;
+  background: var(--bg-1);
+  overflow: hidden;
+}
+.bar > span {
+  display: block;
+  height: 100%;
+  background: var(--c);
+  border-radius: 3px;
+  transition: width 0.9s var(--ease-out);
+}
+
+.score {
+  font: 700 1.7rem/1 var(--font-display);
+  font-variant-numeric: tabular-nums;
+}
+.score small {
+  font: 800 0.7rem var(--font-ui);
+  color: var(--text-faint);
+  margin-left: 3px;
+}
+
+.extra {
+  width: 100%;
+  text-align: left;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.confetti {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 50;
+}
+.confetti span {
+  position: absolute;
+  top: 0;
+  border-radius: 2px;
+  animation-name: global(pg-confetti);
+  animation-timing-function: cubic-bezier(0.25, 0.6, 0.4, 1);
+  animation-fill-mode: both;
+}

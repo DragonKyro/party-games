@@ -1,0 +1,102 @@
+.root {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  padding-top: max(8px, env(safe-area-inset-top));
+  background: color-mix(in srgb, var(--bg-0) 82%, transparent);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+
+.titles {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  font: 600 1.15rem/1.1 var(--font-display);
+  color: var(--accent);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.status {
+  font: 700 0.82rem/1.2 var(--font-ui);
+  color: var(--text-dim);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.right {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.iconBtn {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--bg-2);
+  color: var(--text-dim);
+  font: 800 1rem/1 var(--font-ui);
+  cursor: pointer;
+  flex: none;
+}
+.iconBtn:hover { color: var(--text); background: var(--bg-3); }
+
+.code {
+  font: 700 0.85rem/1 var(--font-display);
+  letter-spacing: 0.12em;
+  padding: 6px 9px;
+  border-radius: var(--radius-pill);
+  background: var(--bg-2);
+  color: var(--text-dim);
+}
+
+@media (max-width: 480px) {
+  .code { display: none; }
+}
+
+.body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 16px 14px calc(28px + var(--safe-bottom));
+  gap: 16px;
+}
+
+.wide {
+  max-width: 1180px;
+}
+
+.howTo {
+  margin: 0;
+  padding-left: 1.2em;
+  display: grid;
+  gap: 8px;
+  color: var(--text-dim);
+  font-weight: 600;
+}

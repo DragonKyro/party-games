@@ -1,0 +1,156 @@
+.root {
+  display: grid;
+  gap: 14px;
+  padding: 16px;
+  border-radius: var(--radius-lg);
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.title {
+  font-size: 1.15rem;
+}
+
+.collect {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: var(--radius);
+  background: var(--bg-1);
+  border: 1px solid var(--line);
+}
+
+.collectText {
+  display: grid;
+  gap: 2px;
+  flex: 1;
+  min-width: 180px;
+}
+
+.collectText small {
+  color: var(--text-dim);
+  font-weight: 600;
+}
+
+.collectControls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.group {
+  display: grid;
+  gap: 8px;
+}
+
+.groupHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.fitNote {
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: var(--sun);
+}
+
+.packs {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(148px, 1fr));
+  gap: 8px;
+}
+
+.packs .pack {
+  grid-template-columns: auto 1fr;
+}
+
+.packText {
+  display: grid;
+  gap: 1px;
+  min-width: 0;
+}
+
+.pack,
+.list {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 8px;
+  min-height: 46px;
+  padding: 6px 12px;
+  border: 2px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--bg-1);
+  color: var(--text);
+  text-align: left;
+  cursor: pointer;
+  transition: border-color var(--dur-fast), background var(--dur-fast), transform var(--dur-fast);
+}
+
+.pack:active,
+.list:active {
+  transform: scale(0.97);
+}
+
+.on {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 16%, var(--bg-1));
+}
+
+.emoji {
+  font-size: 1.3rem;
+}
+
+.packName {
+  font: 800 0.9rem/1.15 var(--font-ui);
+}
+
+.star {
+  color: var(--sun);
+  margin-left: 4px;
+}
+
+.count {
+  font: 800 0.75rem/1 var(--font-ui);
+  color: var(--text-faint);
+}
+
+.lists {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 8px;
+}
+
+.check {
+  width: 22px;
+  height: 22px;
+  display: grid;
+  place-items: center;
+  border-radius: 6px;
+  background: var(--bg-3);
+  color: var(--accent);
+  font-weight: 900;
+}
+
+.empty {
+  color: var(--text-faint);
+  font-weight: 600;
+  font-size: 0.88rem;
+}
+
+.problem {
+  color: var(--warn);
+  font-weight: 800;
+}
