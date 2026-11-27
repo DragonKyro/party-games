@@ -1,0 +1,63 @@
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  background: rgba(8, 5, 22, 0.72);
+  backdrop-filter: blur(4px);
+  animation: global(pg-fade-in) var(--dur-fast) var(--ease-out) both;
+}
+
+.card {
+  width: min(520px, 100%);
+  max-height: min(86vh, 760px);
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-2);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  animation: global(pg-drop-in) var(--dur-med) var(--ease-out) both;
+}
+
+.wide {
+  width: min(760px, 100%);
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 18px 8px;
+}
+
+.title {
+  flex: 1;
+  font-size: 1.3rem;
+}
+
+.close {
+  width: 36px;
+  height: 36px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--bg-3);
+  color: var(--text-dim);
+  cursor: pointer;
+  font-weight: 800;
+}
+
+.body {
+  padding: 8px 18px 18px;
+  overflow: auto;
+}
+
+.footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 12px 18px 16px;
+  border-top: 1px solid var(--line);
+}

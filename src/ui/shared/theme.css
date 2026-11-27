@@ -1,0 +1,287 @@
+/* ==========================================================================
+   Shared theme: self-hosted fonts, design tokens, motion, and a small set
+   of global component classes every game uses (buttons, cards, inputs,
+   chips). Imported once from src/index.css. See src/ui/shared/README.md.
+
+   Look: a night-time party — deep indigo room, candy-coloured accents,
+   chunky rounded type, things that bounce. Big touch targets: most players
+   are on phones, often one-handed, often in a dim room.
+   ========================================================================== */
+
+@import '@fontsource/nunito/latin-400.css';
+@import '@fontsource/nunito/latin-600.css';
+@import '@fontsource/nunito/latin-700.css';
+@import '@fontsource/nunito/latin-800.css';
+@import '@fontsource/nunito/latin-900.css';
+@import '@fontsource/fredoka/latin-500.css';
+@import '@fontsource/fredoka/latin-600.css';
+@import '@fontsource/fredoka/latin-700.css';
+@import '@fontsource/patrick-hand/latin-400.css';
+
+:root {
+  /* ---- Typography ------------------------------------------------------ */
+  --font-ui: 'Nunito', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  /* Chunky rounded display face: titles, big words, scores. */
+  --font-display: 'Fredoka', 'Nunito', system-ui, sans-serif;
+  /* Handwriting: slips, sketchbooks, clues people typed. */
+  --font-hand: 'Patrick Hand', 'Comic Sans MS', 'Segoe Print', cursive;
+
+  /* ---- Surfaces -------------------------------------------------------- */
+  --bg-0: #120e24;
+  --bg-1: #1a1533;
+  --bg-2: #241d45;
+  --bg-3: #2f2757;
+  --bg-4: #3b3269;
+  --line: #3a3168;
+  --line-strong: #544a8c;
+  --text: #f7f4ff;
+  --text-dim: #bdb4de;
+  --text-faint: #8a80b3;
+  --paper: #fffdf6;
+  --paper-ink: #24203a;
+
+  /* ---- Candy accents --------------------------------------------------- */
+  --coral: #ff6b6b;
+  --sun: #ffc93c;
+  --mint: #06d6a0;
+  --sky: #4cc9f0;
+  --grape: #a06cf0;
+  --pink: #ff70a6;
+  --tangerine: #ff9f43;
+  --success: #2bd98b;
+  --danger: #ff5470;
+  --warn: #ffb020;
+
+  /* The current game's accent; GameShell / SetupScreen set it per game. */
+  --accent: var(--sky);
+  --accent-ink: #10172a;
+
+  /* Team colours (index 0..3) — also used for player dots. */
+  --team-0: #ff6b6b;
+  --team-1: #4cc9f0;
+  --team-2: #06d6a0;
+  --team-3: #ffc93c;
+
+  /* ---- Shape ----------------------------------------------------------- */
+  --radius-sm: 10px;
+  --radius: 16px;
+  --radius-lg: 24px;
+  --radius-pill: 999px;
+
+  /* ---- Depth ----------------------------------------------------------- */
+  --shadow-sm: 0 1px 2px rgba(5, 2, 20, 0.5);
+  --shadow-md: 0 8px 20px -6px rgba(5, 2, 20, 0.65), 0 2px 4px rgba(5, 2, 20, 0.4);
+  --shadow-lg: 0 22px 48px -14px rgba(5, 2, 20, 0.8), 0 4px 12px rgba(5, 2, 20, 0.45);
+  /* The chunky "sticker" press-shadow under buttons and cards. */
+  --lip: 0 4px 0 rgba(0, 0, 0, 0.28);
+
+  /* ---- Motion ---------------------------------------------------------- */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --dur-fast: 140ms;
+  --dur-med: 300ms;
+  --dur-slow: 600ms;
+
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* ==========================================================================
+   Keyframes (global names). Inside a .module.css file wrap them in
+   global(...): `animation: global(pg-pop) var(--dur-med) var(--ease-spring);`
+   ========================================================================== */
+
+@keyframes pg-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes pg-rise-in {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes pg-drop-in {
+  from { opacity: 0; transform: translateY(-18px) scale(0.98); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes pg-pop {
+  0% { transform: scale(0.6); opacity: 0; }
+  60% { transform: scale(1.08); opacity: 1; }
+  100% { transform: scale(1); }
+}
+@keyframes pg-bounce {
+  0%, 100% { transform: translateY(0); }
+  40% { transform: translateY(-10px); }
+  60% { transform: translateY(-4px); }
+}
+@keyframes pg-wiggle {
+  0%, 100% { transform: rotate(0); }
+  25% { transform: rotate(-4deg); }
+  75% { transform: rotate(4deg); }
+}
+@keyframes pg-shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-6px); }
+  40% { transform: translateX(6px); }
+  60% { transform: translateX(-4px); }
+  80% { transform: translateX(4px); }
+}
+@keyframes pg-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.06); }
+}
+@keyframes pg-glow {
+  0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 55%, transparent); }
+  50% { box-shadow: 0 0 0 10px color-mix(in srgb, var(--accent) 0%, transparent); }
+}
+@keyframes pg-float {
+  0%, 100% { transform: translateY(0) rotate(var(--r, 0deg)); }
+  50% { transform: translateY(-8px) rotate(var(--r, 0deg)); }
+}
+@keyframes pg-spin {
+  to { transform: rotate(360deg); }
+}
+@keyframes pg-confetti {
+  0% { transform: translate3d(0, -10vh, 0) rotate(0); opacity: 1; }
+  100% { transform: translate3d(var(--dx, 0), 105vh, 0) rotate(var(--rot, 540deg)); opacity: 0.9; }
+}
+@keyframes pg-flip-in {
+  from { transform: perspective(700px) rotateY(90deg); opacity: 0.2; }
+  to { transform: perspective(700px) rotateY(0); opacity: 1; }
+}
+@keyframes pg-slide-left {
+  from { transform: translateX(40px); opacity: 0; }
+  to { transform: none; opacity: 1; }
+}
+
+/* Utility animation classes. */
+.pg-fade-in { animation: pg-fade-in var(--dur-med) var(--ease-out) both; }
+.pg-rise-in { animation: pg-rise-in var(--dur-slow) var(--ease-out) both; }
+.pg-pop { animation: pg-pop var(--dur-med) var(--ease-spring) both; }
+.pg-shake { animation: pg-shake 420ms var(--ease-in-out); }
+.pg-bounce { animation: pg-bounce 900ms var(--ease-out) infinite; }
+.pg-pulse { animation: pg-pulse 1.4s var(--ease-in-out) infinite; }
+.pg-wiggle { animation: pg-wiggle 600ms var(--ease-in-out); }
+.pg-float { animation: pg-float 4s var(--ease-in-out) infinite; }
+.pg-stagger > * {
+  animation: pg-rise-in var(--dur-slow) var(--ease-out) both;
+  animation-delay: calc(var(--i, 0) * 45ms);
+}
+
+/* ==========================================================================
+   Global component classes
+   ========================================================================== */
+
+.pg-btn {
+  --btn-bg: var(--bg-3);
+  --btn-fg: var(--text);
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45em;
+  min-height: 44px;
+  padding: 0.55em 1.1em;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: var(--btn-bg);
+  color: var(--btn-fg);
+  font: 800 1rem/1.1 var(--font-ui);
+  letter-spacing: 0.01em;
+  box-shadow: var(--lip);
+  cursor: pointer;
+  white-space: nowrap;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    transform var(--dur-fast) var(--ease-out),
+    box-shadow var(--dur-fast) var(--ease-out),
+    filter var(--dur-fast);
+}
+.pg-btn:hover:not(:disabled) { filter: brightness(1.08); }
+.pg-btn:active:not(:disabled) { transform: translateY(3px); box-shadow: 0 1px 0 rgba(0, 0, 0, 0.28); }
+.pg-btn:disabled { opacity: 0.45; cursor: not-allowed; box-shadow: none; }
+.pg-btn:focus-visible { outline: 3px solid color-mix(in srgb, var(--accent) 70%, white); outline-offset: 2px; }
+.pg-btn-primary { --btn-bg: var(--accent); --btn-fg: var(--accent-ink); }
+.pg-btn-good { --btn-bg: var(--success); --btn-fg: #06281a; }
+.pg-btn-bad { --btn-bg: var(--danger); --btn-fg: #2b0610; }
+.pg-btn-ghost { --btn-bg: transparent; box-shadow: none; border: 2px solid var(--line-strong); }
+.pg-btn-ghost:active:not(:disabled) { transform: translateY(1px); box-shadow: none; }
+.pg-btn-lg { min-height: 56px; padding: 0.7em 1.6em; font-size: 1.2rem; }
+.pg-btn-xl { min-height: 72px; padding: 0.8em 2em; font: 700 1.6rem/1 var(--font-display); }
+.pg-btn-sm { min-height: 34px; padding: 0.35em 0.85em; font-size: 0.85rem; }
+.pg-btn-block { width: 100%; }
+
+.pg-card {
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: 18px;
+  box-shadow: var(--shadow-md);
+}
+
+.pg-paper {
+  background: var(--paper);
+  color: var(--paper-ink);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-md), var(--lip);
+}
+
+.pg-input {
+  width: 100%;
+  min-height: 46px;
+  padding: 0.55em 0.9em;
+  border: 2px solid var(--line-strong);
+  border-radius: var(--radius);
+  background: var(--bg-1);
+  color: var(--text);
+  font: 700 1rem var(--font-ui);
+  outline: none;
+  transition: border-color var(--dur-fast);
+}
+.pg-input:focus { border-color: var(--accent); }
+.pg-input::placeholder { color: var(--text-faint); font-weight: 600; }
+
+.pg-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35em;
+  padding: 0.3em 0.75em;
+  border-radius: var(--radius-pill);
+  background: var(--bg-3);
+  color: var(--text-dim);
+  font: 800 0.78rem/1.2 var(--font-ui);
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+.pg-chip-accent { background: color-mix(in srgb, var(--accent) 22%, var(--bg-2)); color: var(--accent); }
+
+.pg-kicker {
+  font: 800 0.72rem/1 var(--font-ui);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+.pg-dim { color: var(--text-dim); }
+.pg-faint { color: var(--text-faint); }
+.pg-hand { font-family: var(--font-hand); }
+.pg-display { font-family: var(--font-display); }
+
+.pg-sr-only {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 1ms !important;
+    animation-delay: 0s !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+    transition-delay: 0s !important;
+  }
+}

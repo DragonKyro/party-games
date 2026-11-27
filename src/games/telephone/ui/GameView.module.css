@@ -1,0 +1,508 @@
+/* ---- shared bits ---- */
+.center {
+  display: grid;
+  justify-items: center;
+  gap: 16px;
+  text-align: center;
+  animation: global(pg-rise-in) var(--dur-slow) var(--ease-out) both;
+}
+
+.heading {
+  display: grid;
+  gap: 6px;
+  justify-items: center;
+  text-align: center;
+}
+
+.title {
+  font-size: clamp(1.6rem, 6vw, 2.3rem);
+  color: var(--accent);
+}
+
+.sub {
+  max-width: 40ch;
+  color: var(--text-dim);
+  font-weight: 700;
+}
+
+.who {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 800;
+  color: var(--text);
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  flex: none;
+  border-radius: 50%;
+  background: var(--c);
+}
+
+.error {
+  color: var(--danger);
+  font-weight: 800;
+  text-align: center;
+}
+
+/* ---- roster ---- */
+.roster {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+
+.person {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 14px;
+  border: 2px solid var(--line-strong);
+  border-radius: var(--radius-pill);
+  background: var(--bg-2);
+  color: var(--text);
+  font: 800 0.95rem/1 var(--font-ui);
+}
+.person:disabled { cursor: default; }
+
+.personPick {
+  min-height: 52px;
+  padding: 0 18px;
+  font-size: 1.05rem;
+  cursor: pointer;
+}
+.personPick:hover { border-color: var(--accent); }
+
+.personDone {
+  border-color: color-mix(in srgb, var(--success) 60%, transparent);
+  background: color-mix(in srgb, var(--success) 12%, var(--bg-2));
+}
+
+.check { color: var(--text-faint); }
+.personDone .check { color: var(--success); }
+
+.progress {
+  display: grid;
+  gap: 10px;
+  justify-items: center;
+}
+
+/* ---- step 0: pick a prompt ---- */
+.choices {
+  width: 100%;
+  max-width: 520px;
+  display: grid;
+  gap: 12px;
+}
+
+.choice {
+  position: relative;
+  min-height: 84px;
+  padding: 16px 44px;
+  border: 3px solid transparent;
+  border-radius: 10px;
+  background:
+    linear-gradient(90deg, transparent 0 26px, rgba(255, 112, 166, 0.35) 26px 28px, transparent 28px),
+    repeating-linear-gradient(transparent 0 26px, rgba(76, 201, 240, 0.16) 26px 28px),
+    var(--paper);
+  color: var(--paper-ink);
+  font-size: clamp(1.4rem, 6vw, 1.9rem);
+  line-height: 1.1;
+  box-shadow: var(--shadow-md), var(--lip);
+  transform: rotate(var(--r, 0deg));
+  cursor: pointer;
+  transition: transform var(--dur-med) var(--ease-spring), border-color var(--dur-fast);
+}
+.choice:hover { transform: rotate(0deg) scale(1.02); }
+
+.choiceOn {
+  border-color: var(--accent);
+  transform: rotate(0deg) scale(1.03);
+}
+
+.choiceTick {
+  position: absolute;
+  top: 50%;
+  right: 14px;
+  transform: translateY(-50%);
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--accent-ink);
+  font: 900 1rem/1 var(--font-ui);
+  animation: global(pg-pop) var(--dur-med) var(--ease-spring) both;
+}
+
+/* ---- draw / guess steps ---- */
+.step {
+  display: grid;
+  gap: 12px;
+  justify-items: center;
+  animation: global(pg-rise-in) var(--dur-med) var(--ease-out) both;
+}
+
+.stepTop {
+  width: 100%;
+  max-width: 820px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.stepInfo {
+  min-width: 0;
+  display: grid;
+  gap: 4px;
+}
+
+.bookOf { font-size: 0.9rem; color: var(--text-dim); }
+
+.ownBook { color: var(--accent); }
+
+.toDraw {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px 8px;
+}
+
+.toDrawLabel {
+  font-weight: 800;
+  color: var(--text-dim);
+}
+
+.toDrawText {
+  padding: 2px 12px;
+  border-radius: 6px;
+  background: var(--paper);
+  color: var(--paper-ink);
+  font-size: clamp(1.4rem, 6.5vw, 2.1rem);
+  line-height: 1.15;
+  box-shadow: var(--lip);
+  word-break: break-word;
+}
+
+/* Fit the 4:3 page to the width on a portrait phone, and to the height on a wide screen. */
+.canvasBox {
+  width: min(100%, max(280px, calc((100dvh - 380px) * 4 / 3)));
+  margin: 0 auto;
+}
+
+.stepActions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.tip {
+  color: var(--text-faint);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.guessRow {
+  width: min(100%, 620px);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+}
+
+.guessInput {
+  min-height: 56px;
+  font-size: 1.15rem;
+}
+
+@media (max-width: 420px) {
+  .guessRow { grid-template-columns: 1fr; }
+}
+
+.waitArt {
+  font-size: 64px;
+  animation: global(pg-float) 3s var(--ease-in-out) infinite;
+}
+
+.hurry {
+  padding: 8px 14px;
+  border-radius: var(--radius-pill);
+  background: color-mix(in srgb, var(--warn) 18%, var(--bg-2));
+  color: var(--warn);
+  font-weight: 800;
+  animation: global(pg-pulse) 1.2s var(--ease-in-out) infinite;
+}
+
+/* ---- pages (reveal + replay) ---- */
+.sketchWrap {
+  position: relative;
+  width: 100%;
+}
+
+.sketch { transform: rotate(-0.6deg); }
+
+.blankNote {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: #a7a2bb;
+  font: 700 1.2rem/1 var(--font-hand);
+}
+
+.words {
+  width: 100%;
+  padding: 14px 18px;
+  border-radius: 8px;
+  background: var(--paper);
+  color: var(--paper-ink);
+  font-size: 1.4rem;
+  line-height: 1.15;
+  text-align: center;
+  word-break: break-word;
+  box-shadow: var(--lip);
+}
+
+.wordsBig { font-size: clamp(1.7rem, 7vw, 2.5rem); padding: 20px; }
+
+.promptWords {
+  background:
+    linear-gradient(90deg, transparent 0 22px, rgba(255, 112, 166, 0.4) 22px 24px, transparent 24px),
+    var(--paper);
+}
+
+.missedWords { color: #8f8aa6; font-style: italic; }
+
+.pages {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 18px;
+  width: 100%;
+}
+
+.page {
+  display: grid;
+  gap: 8px;
+  animation: global(pg-drop-in) var(--dur-slow) var(--ease-out) both;
+}
+
+.pageDraw .sketchWrap {
+  width: min(100%, max(260px, calc((100dvh - 300px) * 4 / 3)));
+  margin: 0 auto;
+}
+
+.pageHead {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  font-weight: 700;
+}
+
+/* ---- reveal ---- */
+.reveal {
+  display: grid;
+  gap: 16px;
+}
+
+.revealHead {
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+  text-align: center;
+  animation: global(pg-flip-in) var(--dur-slow) var(--ease-out) both;
+}
+
+.dots {
+  display: flex;
+  gap: 5px;
+}
+.dots span {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--bg-3);
+  transition: background var(--dur-med);
+}
+.dots .dotOn { background: var(--accent); }
+
+.revealBar {
+  position: sticky;
+  bottom: 0;
+  z-index: 5;
+  display: grid;
+  justify-items: center;
+  padding: 12px 0 calc(6px + var(--safe-bottom));
+  background: linear-gradient(transparent, var(--bg-0) 40%);
+}
+
+.glow { animation: global(pg-glow) 1.8s var(--ease-in-out) infinite; }
+
+.heartRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.heartBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  padding: 0 16px;
+  border: 2px solid var(--line-strong);
+  border-radius: var(--radius-pill);
+  background: var(--bg-2);
+  color: var(--text);
+  font: 800 1rem/1 var(--font-ui);
+  cursor: pointer;
+}
+
+.heartOn {
+  border-color: var(--pink);
+  background: color-mix(in srgb, var(--pink) 18%, var(--bg-2));
+}
+
+.heartIcon {
+  font-size: 1.3rem;
+  animation: global(pg-pop) var(--dur-med) var(--ease-spring) both;
+}
+
+.heartCount {
+  font-weight: 800;
+  color: var(--pink);
+}
+
+.heartNames {
+  color: var(--text-faint);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.heartChips {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+
+.heartLabel {
+  font-weight: 800;
+  margin-right: 2px;
+}
+
+.heartChip {
+  min-height: 34px;
+  padding: 0 12px;
+  border: 2px solid var(--line-strong);
+  border-radius: var(--radius-pill);
+  background: var(--bg-2);
+  color: var(--text-dim);
+  font: 800 0.85rem/1 var(--font-ui);
+  cursor: pointer;
+}
+
+.heartChipOn {
+  border-color: var(--c);
+  background: color-mix(in srgb, var(--c) 22%, var(--bg-2));
+  color: var(--text);
+}
+.heartChipOn::before { content: '❤️ '; }
+
+/* ---- results ---- */
+.favourite {
+  display: grid;
+  gap: 10px;
+  padding: 16px;
+  margin-bottom: 14px;
+  border-radius: var(--radius-lg);
+  background: color-mix(in srgb, var(--accent) 10%, var(--bg-2));
+  border: 2px solid color-mix(in srgb, var(--accent) 50%, transparent);
+}
+
+.favCaption {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  font-weight: 700;
+}
+
+.favBefore {
+  display: grid;
+  gap: 6px;
+  max-width: 420px;
+  font-size: 0.9rem;
+}
+
+.books {
+  padding: 12px 14px;
+  border-radius: var(--radius);
+  background: var(--bg-2);
+}
+
+.books summary {
+  cursor: pointer;
+  font-weight: 800;
+}
+
+.bookList {
+  list-style: none;
+  margin: 12px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 14px;
+}
+
+.bookItem {
+  display: grid;
+  gap: 8px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--line);
+}
+
+.bookLine {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 10px;
+}
+
+.chain {
+  min-width: 0;
+  font-size: 1.15rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.chainText {
+  color: var(--text-dim);
+  font-size: 0.9rem;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+/* ---- host controls ---- */
+.hostBar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: auto;
+  padding-top: 12px;
+  border-top: 1px dashed var(--line);
+}

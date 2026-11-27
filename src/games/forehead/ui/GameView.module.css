@@ -1,0 +1,577 @@
+/* ==========================================================================
+   Forehead
+   ========================================================================== */
+
+/* ---- the card held up to the forehead (GameShell bare) ---- */
+.held {
+  --ink: #1d1430;
+  position: fixed;
+  inset: 0;
+  /* Above the online chat button: this screen faces the room. */
+  z-index: 70;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 50% 50%, #ffe7a3 0%, var(--accent) 62%, #f4a91c 100%);
+  color: var(--ink);
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  touch-action: manipulation;
+}
+
+.heldBar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 3;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 10px;
+  padding: max(8px, env(safe-area-inset-top)) max(12px, env(safe-area-inset-right)) 8px
+    max(12px, env(safe-area-inset-left));
+  pointer-events: none;
+}
+.heldBar > * {
+  pointer-events: auto;
+}
+
+.heldIcon {
+  justify-self: start;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(29, 20, 48, 0.13);
+  color: var(--ink);
+  font: 800 0.9rem/1 var(--font-ui);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.heldClock {
+  font: 700 1.7rem/1 var(--font-display);
+  font-variant-numeric: tabular-nums;
+  opacity: 0.8;
+}
+.heldClockWarn {
+  color: #c1121f;
+  opacity: 1;
+  animation: global(pg-pulse) 1s var(--ease-in-out) infinite;
+}
+
+.heldRight {
+  justify-self: end;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.heldScore {
+  font: 700 1.4rem/1 var(--font-display);
+  font-variant-numeric: tabular-nums;
+}
+
+.heldChip {
+  padding: 7px 11px;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: rgba(29, 20, 48, 0.12);
+  color: var(--ink);
+  font: 800 0.68rem/1 var(--font-ui);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+button.heldChip {
+  background: var(--ink);
+  color: var(--accent);
+  cursor: pointer;
+}
+
+/* Tap targets: the top half passes, the bottom half scores. Inset from the
+   left / right edges, where the guesser's hands grip the phone. */
+.zone {
+  position: absolute;
+  left: 11%;
+  right: 11%;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: rgba(29, 20, 48, 0.5);
+  font: 800 clamp(0.66rem, 2.3vmin, 0.9rem)/1 var(--font-ui);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background var(--dur-fast);
+}
+.zone:active {
+  background: rgba(29, 20, 48, 0.06);
+}
+.zone span {
+  padding: 5px 12px;
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.28);
+}
+.zoneTop {
+  top: 0;
+  height: 50%;
+  align-items: flex-start;
+  padding-top: max(58px, calc(env(safe-area-inset-top) + 50px));
+  border-bottom: 2px dashed rgba(29, 20, 48, 0.1);
+}
+.zoneBottom {
+  bottom: 0;
+  height: 50%;
+  align-items: flex-end;
+  padding-bottom: max(12px, var(--safe-bottom));
+}
+
+.word {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  padding: 9vh 8vw;
+  pointer-events: none;
+  font-family: var(--font-display);
+  font-weight: 700;
+  line-height: 1.02;
+  text-align: center;
+  overflow-wrap: anywhere;
+  text-wrap: balance;
+  animation: global(pg-pop) var(--dur-med) var(--ease-spring) both;
+}
+
+.getReady {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 4px;
+  padding: 20px;
+  text-align: center;
+  pointer-events: none;
+}
+.getReady p {
+  font: 800 clamp(1.1rem, 5vmin, 2.1rem)/1.15 var(--font-ui);
+}
+.getReady .small {
+  font-size: clamp(0.75rem, 2.6vmin, 1rem);
+  opacity: 0.7;
+}
+
+.bigCount {
+  font: 700 min(50vh, 42vw)/0.95 var(--font-display);
+  font-variant-numeric: tabular-nums;
+  animation: global(pg-pop) 0.45s var(--ease-spring) both;
+}
+
+.rotate {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: max(56px, calc(var(--safe-bottom) + 44px));
+  z-index: 3;
+  width: max-content;
+  margin: 0 auto;
+  padding: 8px 14px;
+  border-radius: var(--radius-pill);
+  background: var(--ink);
+  color: var(--accent);
+  font: 800 0.85rem/1 var(--font-ui);
+  pointer-events: none;
+  animation: global(pg-wiggle) 1.4s var(--ease-in-out) infinite;
+}
+
+/* Full-screen "got it" / "pass" flash. No fill-mode: with reduced motion the
+   animation is instant and the flash simply shows until React removes it. */
+.flash {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 2px;
+  pointer-events: none;
+  animation: flash-out 700ms var(--ease-out);
+}
+.flash[data-kind='correct'] {
+  background: var(--success);
+  color: #06281a;
+}
+.flash[data-kind='pass'] {
+  background: var(--tangerine);
+  color: #2b1300;
+}
+.flash span {
+  font: 700 min(42vh, 34vw)/1 var(--font-display);
+}
+.flash b {
+  font: 700 clamp(1.6rem, 8vmin, 3.4rem)/1 var(--font-display);
+}
+
+@keyframes flash-out {
+  0% {
+    opacity: 0.98;
+  }
+  55% {
+    opacity: 0.92;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* ---- between turns ---- */
+.center {
+  flex: 1;
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  gap: 14px;
+  padding: 16px 0;
+  text-align: center;
+  animation: global(pg-rise-in) var(--dur-slow) var(--ease-out) both;
+}
+
+.ready {
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  padding: 12px 0;
+  text-align: center;
+  animation: global(pg-rise-in) var(--dur-slow) var(--ease-out) both;
+}
+
+.badge {
+  padding: 6px 14px;
+  border-radius: var(--radius-pill);
+  background: var(--c);
+  color: #160f2b;
+  font: 800 0.85rem/1 var(--font-ui);
+  letter-spacing: 0.04em;
+}
+
+.readyTitle {
+  font-size: clamp(2rem, 9vw, 3rem);
+}
+
+.lead {
+  max-width: 38ch;
+  font-size: 1.08rem;
+  font-weight: 700;
+  color: var(--text-dim);
+}
+
+.go {
+  animation: global(pg-glow) 1.8s var(--ease-in-out) infinite;
+}
+
+.howTo {
+  display: grid;
+  gap: 8px;
+  width: 100%;
+  max-width: 420px;
+}
+.howToCompact {
+  max-width: 340px;
+  margin-top: 4px;
+}
+.howRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 9px 14px;
+  border-radius: var(--radius);
+  background: var(--bg-3);
+  text-align: left;
+  font-weight: 700;
+  color: var(--text-dim);
+}
+.howRow b {
+  color: var(--text);
+}
+.howRow i {
+  width: 2rem;
+  flex: none;
+  font: 700 1.6rem/1 var(--font-display);
+  font-style: normal;
+  text-align: center;
+  color: var(--accent);
+}
+
+.hostRow {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+
+.warn {
+  padding: 8px 14px;
+  border-radius: var(--radius-pill);
+  background: color-mix(in srgb, var(--warn) 18%, var(--bg-2));
+  color: var(--warn);
+  font-weight: 800;
+}
+
+.bigCountDark {
+  font: 700 clamp(6rem, 40vw, 11rem)/1 var(--font-display);
+  font-variant-numeric: tabular-nums;
+  color: var(--accent);
+  animation: global(pg-pop) 0.45s var(--ease-spring) both;
+}
+
+.getReadyMsg {
+  max-width: 22ch;
+}
+
+.pausedIcon {
+  font: 700 4rem/1 var(--font-display);
+  color: var(--accent);
+}
+
+.pausedNote {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 8px 6px 16px;
+  border-radius: var(--radius-pill);
+  background: var(--bg-3);
+  font-weight: 800;
+}
+
+/* ---- during a turn, on screens that aren't on a forehead ---- */
+.clue {
+  flex: 1;
+  display: grid;
+  align-content: start;
+  justify-items: center;
+  gap: 14px;
+  user-select: none;
+}
+
+.turnTop {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.clueHint {
+  font-weight: 800;
+  color: var(--text-dim);
+  text-align: center;
+}
+
+.card {
+  width: 100%;
+  min-height: 32vh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  border-radius: var(--radius-lg);
+  background: radial-gradient(circle at 50% 45%, #ffe7a3 0%, var(--accent) 70%);
+  color: #1d1430;
+  font: 700 clamp(2.2rem, 11vw, 4.4rem)/1.04 var(--font-display);
+  text-align: center;
+  overflow-wrap: anywhere;
+  text-wrap: balance;
+  box-shadow: var(--shadow-lg), var(--lip);
+  animation: global(pg-pop) var(--dur-med) var(--ease-spring) both;
+}
+
+.markRow {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 10px;
+}
+.markRow button {
+  min-height: 88px;
+}
+
+.passBtn {
+  --btn-bg: var(--tangerine);
+  --btn-fg: #2b1300;
+}
+.correctBtn {
+  font-size: 1.9rem;
+}
+
+.guessTitle {
+  font-size: clamp(2.2rem, 11vw, 4rem);
+  color: var(--accent);
+}
+
+.tally {
+  display: flex;
+  gap: 16px;
+  font: 700 1.7rem/1 var(--font-display);
+  font-variant-numeric: tabular-nums;
+}
+.tallyOk {
+  color: var(--success);
+}
+.tallyNo {
+  color: var(--tangerine);
+}
+
+/* ---- results ---- */
+.results {
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  padding: 8px 0;
+  text-align: center;
+  animation: global(pg-rise-in) var(--dur-slow) var(--ease-out) both;
+}
+
+.resultsTitle {
+  font-size: clamp(2rem, 9vw, 3rem);
+}
+.resultsTitle span {
+  color: var(--accent);
+}
+
+.cardList {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 6px;
+}
+.cardList li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  border-radius: var(--radius);
+  background: var(--bg-2);
+  text-align: left;
+  font: 600 1.15rem/1.2 var(--font-display);
+}
+.cardList li.got {
+  background: color-mix(in srgb, var(--success) 16%, var(--bg-2));
+}
+.cardList li.missed {
+  color: var(--text-dim);
+}
+
+.mark {
+  width: 30px;
+  height: 30px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  font: 800 1rem/1 var(--font-ui);
+}
+.got .mark {
+  background: var(--success);
+  color: #06281a;
+}
+.missed .mark {
+  background: var(--bg-4);
+  color: var(--text-dim);
+}
+
+.scores {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+}
+
+.scoreChip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 11px;
+  border: 2px solid transparent;
+  border-radius: var(--radius-pill);
+  background: var(--bg-2);
+  font-weight: 800;
+  font-size: 0.9rem;
+}
+.scoreChip i {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--c);
+}
+.scoreChip b {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+}
+.scoreActive {
+  border-color: var(--c);
+}
+
+/* ---- final ---- */
+.award {
+  margin-bottom: 12px;
+  text-align: center;
+  font-weight: 800;
+}
+
+.allCards {
+  padding: 12px 14px;
+  border-radius: var(--radius);
+  background: var(--bg-2);
+}
+.allCards summary {
+  cursor: pointer;
+  font-weight: 800;
+}
+
+.turnBlock {
+  margin-top: 12px;
+}
+.turnBlock h4 {
+  margin: 0 0 6px;
+  font: 800 0.9rem/1.2 var(--font-ui);
+  color: var(--text-dim);
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.chipCard {
+  padding: 4px 10px;
+  border-radius: 8px;
+  font: 600 1rem/1.25 var(--font-display);
+}
+.chipCard.got {
+  background: color-mix(in srgb, var(--success) 22%, var(--bg-3));
+}
+.chipCard.missed {
+  background: var(--bg-3);
+  color: var(--text-dim);
+}
+.chipCard small {
+  font: 700 0.7rem var(--font-ui);
+  color: var(--text-faint);
+}
+
+/* ---- host menu ---- */
+.menu {
+  display: grid;
+  gap: 10px;
+}

@@ -1,0 +1,275 @@
+.strip {
+  display: flex;
+  gap: 8px;
+  align-items: stretch;
+}
+
+.teamScore {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: var(--radius);
+  background: color-mix(in srgb, var(--c) 12%, var(--bg-2));
+  border: 2px solid transparent;
+  transition: border-color var(--dur-med), transform var(--dur-med) var(--ease-spring);
+}
+
+.active {
+  border-color: var(--c);
+  transform: translateY(-2px);
+}
+
+.teamLabel {
+  font-weight: 800;
+  color: var(--c);
+  font-size: 0.9rem;
+}
+
+.teamPoints {
+  font: 700 1.6rem/1 var(--font-display);
+  font-variant-numeric: tabular-nums;
+}
+
+.bowlMini {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0 8px;
+  border-radius: var(--radius);
+  background: var(--bg-2);
+  font: 700 1.1rem/1 var(--font-display);
+}
+
+.bowlNote {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+/* ---- round intro ---- */
+.intro {
+  flex: 1;
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  gap: 12px;
+  text-align: center;
+  padding: 20px 0;
+  animation: global(pg-rise-in) var(--dur-slow) var(--ease-out) both;
+}
+
+.emptied {
+  padding: 8px 14px;
+  border-radius: var(--radius-pill);
+  background: var(--bg-2);
+  font-weight: 800;
+}
+
+.roundEmoji {
+  font-size: 84px;
+  animation: global(pg-pop) 0.6s var(--ease-spring) both;
+}
+
+.roundName {
+  font-size: clamp(2.4rem, 10vw, 3.6rem);
+  color: var(--accent);
+}
+
+.roundRule {
+  max-width: 36ch;
+  font-size: 1.15rem;
+  font-weight: 800;
+}
+
+/* ---- ready ---- */
+.ready {
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  text-align: center;
+  padding: 18px 0;
+  animation: global(pg-rise-in) var(--dur-slow) var(--ease-out) both;
+}
+
+.teamBadge {
+  padding: 6px 14px;
+  border-radius: var(--radius-pill);
+  background: var(--c);
+  color: #160f2b;
+  font: 800 0.9rem/1 var(--font-ui);
+  letter-spacing: 0.04em;
+}
+
+.readyTitle {
+  font-size: clamp(1.8rem, 8vw, 2.8rem);
+}
+
+.readyRule {
+  max-width: 36ch;
+  font-weight: 700;
+  color: var(--text-dim);
+}
+
+.go {
+  animation: global(pg-glow) 1.8s var(--ease-in-out) infinite;
+}
+
+.hostRow {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.lastTurn {
+  width: 100%;
+  display: grid;
+  gap: 6px;
+  margin-top: 10px;
+  padding: 12px 14px;
+  border-radius: var(--radius);
+  background: var(--bg-2);
+  border-left: 5px solid var(--c);
+  text-align: left;
+}
+
+.gotList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.gotSlip {
+  padding: 4px 10px;
+  border-radius: 6px;
+  background: var(--paper);
+  color: var(--paper-ink);
+  font: 400 1.05rem/1.2 var(--font-hand);
+}
+.gotSlip small {
+  font-family: var(--font-ui);
+  font-size: 0.7rem;
+  color: #6b6585;
+}
+
+/* ---- the clue-giver's turn ---- */
+.turn {
+  flex: 1;
+  display: grid;
+  align-content: start;
+  justify-items: center;
+  gap: 14px;
+  user-select: none;
+}
+
+.turnTop {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.turnCount {
+  display: grid;
+  justify-items: center;
+}
+
+.bigNum {
+  font: 700 3rem/1 var(--font-display);
+  font-variant-numeric: tabular-nums;
+}
+
+.reminder {
+  font-weight: 800;
+  color: var(--text-dim);
+}
+
+.slip {
+  width: 100%;
+  min-height: 34vh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  border-radius: 10px;
+  background:
+    repeating-linear-gradient(transparent 0 30px, rgba(76, 201, 240, 0.18) 30px 32px),
+    var(--paper);
+  color: var(--paper-ink);
+  font-size: clamp(2.2rem, 11vw, 4.2rem);
+  line-height: 1.05;
+  text-align: center;
+  word-break: break-word;
+  box-shadow: var(--shadow-lg), var(--lip);
+  transform: rotate(-1deg);
+  animation: global(pg-drop-in) var(--dur-med) var(--ease-out) both;
+}
+
+.turnButtons {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 10px;
+}
+
+.gotBtn {
+  min-height: 88px;
+  font-size: 1.9rem;
+}
+
+.skipBtn {
+  min-height: 88px;
+}
+
+.undo {
+  border: 0;
+  background: transparent;
+  color: var(--text-faint);
+  font-weight: 700;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/* ---- watching a turn ---- */
+.watch {
+  flex: 1;
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  gap: 14px;
+  text-align: center;
+  padding: 20px 0;
+}
+
+.watchTitle {
+  font-size: clamp(2.2rem, 11vw, 4rem);
+  color: var(--c);
+}
+
+.watchCount {
+  display: grid;
+  justify-items: center;
+  animation: global(pg-pop) var(--dur-med) var(--ease-spring);
+}
+
+/* ---- results ---- */
+.award {
+  text-align: center;
+  font-weight: 800;
+  margin-bottom: 12px;
+}
+
+.allSlips {
+  padding: 12px 14px;
+  border-radius: var(--radius);
+  background: var(--bg-2);
+}
+
+.allSlips summary {
+  cursor: pointer;
+  font-weight: 800;
+  margin-bottom: 10px;
+}

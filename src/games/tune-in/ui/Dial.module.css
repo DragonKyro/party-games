@@ -1,0 +1,376 @@
+/* The radio tuning band. --lc / --rc are the spectrum's end colours. */
+
+.root {
+  --inset: 18px;
+  --needle: #ff5a36;
+  display: grid;
+  gap: 8px;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* ---- the two ends ---- */
+.ends {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 12px;
+  padding: 0 4px;
+}
+
+.endL,
+.endR {
+  max-width: 48%;
+  font: 700 clamp(1.05rem, 4.8vw, 1.4rem) / 1.1 var(--font-display);
+  overflow-wrap: anywhere;
+}
+.endL {
+  color: var(--lc);
+  text-shadow: 0 0 14px color-mix(in srgb, var(--lc) 55%, transparent);
+}
+.endL::before {
+  content: '◂ ';
+  opacity: 0.7;
+}
+.endR {
+  color: var(--rc);
+  text-align: right;
+  text-shadow: 0 0 14px color-mix(in srgb, var(--rc) 55%, transparent);
+}
+.endR::after {
+  content: ' ▸';
+  opacity: 0.7;
+}
+
+/* ---- the dial window: walnut bezel, brass rim, backlit glass ---- */
+.window {
+  position: relative;
+  height: clamp(92px, 24vw, 124px);
+  border-radius: 18px;
+  background: #0c0818;
+  box-shadow:
+    inset 0 0 0 2px rgba(255, 214, 150, 0.35),
+    inset 0 6px 18px rgba(0, 0, 0, 0.7),
+    0 0 0 5px #3a271a,
+    0 0 0 7px #5b3d27,
+    var(--shadow-lg);
+  /* Room for the bezel, the needle's cap above and its grip below. */
+  margin: 18px 7px 18px;
+}
+
+.interactive {
+  cursor: grab;
+  touch-action: none;
+}
+.interactive:active {
+  cursor: grabbing;
+}
+.interactive:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--accent) 70%, white);
+  outline-offset: 9px;
+}
+
+.clip {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  overflow: hidden;
+}
+
+.glass {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.1), transparent 38%),
+    radial-gradient(ellipse 70% 90% at 50% 130%, rgba(255, 170, 80, 0.28), transparent 70%),
+    linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--lc) 42%, #0c0818) 0%,
+      color-mix(in srgb, var(--lc) 14%, #160f28) 32%,
+      #160f28 50%,
+      color-mix(in srgb, var(--rc) 14%, #160f28) 68%,
+      color-mix(in srgb, var(--rc) 42%, #0c0818) 100%
+    );
+}
+
+.ticks {
+  position: absolute;
+  left: var(--inset);
+  right: var(--inset);
+  bottom: 0;
+  width: calc(100% - 2 * var(--inset));
+  height: 56%;
+  overflow: visible;
+}
+.tick {
+  stroke: rgba(255, 236, 210, 0.42);
+  stroke-width: 1;
+}
+.tickMajor {
+  stroke: rgba(255, 236, 210, 0.9);
+  stroke-width: 2;
+}
+
+.freqs {
+  position: absolute;
+  left: var(--inset);
+  right: var(--inset);
+  top: 9px;
+  height: 14px;
+}
+.freqs span {
+  position: absolute;
+  transform: translateX(-50%);
+  font: 700 0.7rem/1 var(--font-display);
+  letter-spacing: 0.04em;
+  color: #ffd9a8;
+  opacity: 0.75;
+  text-shadow: 0 0 6px rgba(255, 170, 80, 0.6);
+}
+
+/* ---- the target + scoring zones ---- */
+.zonesBox {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: var(--inset);
+  right: var(--inset);
+  overflow: hidden;
+}
+
+.zones {
+  position: absolute;
+  inset: 0;
+}
+
+.zone {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  transform-origin: center;
+  border-left: 1px solid rgba(255, 226, 180, 0.35);
+  border-right: 1px solid rgba(255, 226, 180, 0.35);
+}
+.zone[data-pts='1'] { background: rgba(255, 159, 67, 0.16); }
+.zone[data-pts='2'] { background: rgba(255, 159, 67, 0.26); }
+.zone[data-pts='3'] { background: rgba(255, 176, 92, 0.42); }
+.zone[data-pts='4'] {
+  background: linear-gradient(180deg, rgba(255, 246, 220, 0.95), rgba(255, 186, 100, 0.85));
+  box-shadow: 0 0 22px 8px rgba(255, 170, 80, 0.55);
+  border: 0;
+}
+
+.zonePts {
+  position: absolute;
+  bottom: 3px;
+  left: 3px;
+  font: 800 0.62rem/1 var(--font-ui);
+  color: rgba(255, 238, 214, 0.9);
+}
+.zone[data-pts='4'] .zonePts {
+  left: 50%;
+  transform: translateX(-50%);
+  color: #5a2a00;
+}
+
+.station {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  margin-left: -1px;
+  background: #fffaf0;
+  box-shadow: 0 0 10px 3px rgba(255, 230, 190, 0.9);
+}
+
+/* Reveal: a scan line seeks the station, then the zones bloom outward. */
+.revealing .zone {
+  transform: scaleX(0);
+  animation: bloom 520ms var(--ease-spring) forwards;
+  animation-delay: calc(720ms + var(--i) * 110ms);
+}
+.revealing .station {
+  opacity: 0;
+  animation: stationOn 260ms ease-out 680ms forwards;
+}
+
+.sweep {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  margin-left: -1.5px;
+  background: #fff;
+  box-shadow: 0 0 16px 6px rgba(255, 220, 170, 0.9);
+  animation: sweep 760ms var(--ease-out) forwards;
+}
+
+@keyframes sweep {
+  0% { left: 0%; opacity: 1; }
+  82% { left: var(--t); opacity: 1; }
+  100% { left: var(--t); opacity: 0; }
+}
+
+@keyframes bloom {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+@keyframes stationOn {
+  0% { opacity: 0; }
+  40% { opacity: 1; box-shadow: 0 0 26px 10px rgba(255, 240, 210, 1); }
+  100% { opacity: 1; }
+}
+
+/* ---- needle + markers (not clipped, so the cap can poke out) ---- */
+.track {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: var(--inset);
+  right: var(--inset);
+  pointer-events: none;
+}
+
+.needle {
+  position: absolute;
+  top: -8px;
+  bottom: -8px;
+  width: 4px;
+  margin-left: -2px;
+  border-radius: 2px;
+  background: linear-gradient(180deg, #ffe7cf, var(--needle) 26%, #e8321f);
+  box-shadow:
+    0 0 10px 2px rgba(255, 90, 54, 0.75),
+    0 0 26px 4px rgba(255, 90, 54, 0.4);
+}
+.needle::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -9px;
+  width: 22px;
+  height: 12px;
+  transform: translateX(-50%);
+  border-radius: 6px;
+  background: linear-gradient(180deg, #ff7a4a, #b9260f);
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.35);
+}
+.smooth {
+  transition: left 170ms linear;
+}
+.dim {
+  opacity: 0.45;
+  filter: saturate(0.4);
+}
+
+.cap {
+  position: absolute;
+  top: -11px;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #fff, #ff8a5c 45%, #c42a12);
+  box-shadow: 0 0 12px rgba(255, 90, 54, 0.9), 0 2px 0 rgba(0, 0, 0, 0.35);
+}
+
+.pin {
+  position: absolute;
+  top: 26%;
+  bottom: 0;
+  width: 3px;
+  margin-left: -1.5px;
+  border-radius: 2px;
+  background: var(--c);
+  box-shadow: 0 0 8px var(--c);
+  animation: pinDrop 420ms var(--ease-spring) both;
+  animation-delay: calc(1250ms + var(--i) * 90ms);
+}
+.pin::before {
+  content: '';
+  position: absolute;
+  top: -7px;
+  left: 50%;
+  width: 13px;
+  height: 13px;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: var(--c);
+  border: 2px solid #120c22;
+}
+.pinYou {
+  width: 4px;
+  margin-left: -2px;
+}
+.pinYou::before {
+  width: 17px;
+  height: 17px;
+  top: -9px;
+  border-color: #fff;
+}
+
+@keyframes pinDrop {
+  from { opacity: 0; transform: translateY(-24px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* ---- name chips under the dial ---- */
+.chips {
+  position: relative;
+  margin: -16px calc(var(--inset) + 7px) 0;
+}
+
+.chipWrap {
+  display: contents;
+}
+
+.stem {
+  position: absolute;
+  top: 0;
+  width: 2px;
+  margin-left: -1px;
+  background: var(--c);
+  opacity: 0.6;
+  animation: pinDrop 420ms var(--ease-out) both;
+  animation-delay: calc(1250ms + var(--i) * 90ms);
+}
+
+.chip {
+  position: absolute;
+  height: 22px;
+  padding: 0 6px;
+  border-radius: var(--radius-pill);
+  border: 1.5px solid var(--c);
+  background: color-mix(in srgb, var(--c) 20%, var(--bg-1));
+  color: var(--c);
+  font: 800 0.76rem/19px var(--font-ui);
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  animation: pinDrop 420ms var(--ease-spring) both;
+  animation-delay: calc(1250ms + var(--i) * 90ms);
+}
+.chipYou {
+  background: var(--c);
+  color: #160f2b;
+}
+
+/* ---- signal bars (points) ---- */
+.bars {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 2px;
+  flex: none;
+}
+.bars i {
+  width: 4px;
+  border-radius: 1px;
+  background: rgba(255, 255, 255, 0.16);
+}
+.bars .barOn {
+  background: var(--accent);
+  box-shadow: 0 0 6px color-mix(in srgb, var(--accent) 70%, transparent);
+}

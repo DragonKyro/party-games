@@ -1,0 +1,103 @@
+.banners {
+  position: fixed;
+  top: calc(60px + env(safe-area-inset-top));
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 50;
+  display: grid;
+  gap: 6px;
+  pointer-events: none;
+}
+
+.banner {
+  padding: 8px 16px;
+  border-radius: var(--radius-pill);
+  background: rgba(70, 18, 30, 0.94);
+  border: 1px solid var(--danger);
+  color: #ffe0e6;
+  font-size: 13px;
+  font-weight: 800;
+  box-shadow: var(--shadow-md);
+  animation: global(pg-drop-in) var(--dur-med) var(--ease-out) both;
+  white-space: nowrap;
+}
+
+.calm {
+  background: rgba(26, 21, 51, 0.94);
+  border-color: var(--line-strong);
+  color: var(--text-dim);
+}
+
+.drawer {
+  position: fixed;
+  right: 12px;
+  bottom: calc(12px + var(--safe-bottom));
+  z-index: 60;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+}
+
+.fab {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  color: var(--text);
+  background: color-mix(in srgb, var(--bg-3) 85%, transparent);
+  box-shadow: var(--shadow-md);
+  cursor: pointer;
+  opacity: 0.85;
+}
+.fab:hover { opacity: 1; }
+
+.badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 5px;
+  border-radius: 999px;
+  background: var(--danger);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 900;
+  display: grid;
+  place-items: center;
+  animation: global(pg-pop) var(--dur-med) var(--ease-spring) both;
+}
+
+.panel {
+  width: min(360px, calc(100vw - 24px));
+  background: var(--bg-2);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  padding: 12px;
+  animation: global(pg-rise-in) var(--dur-med) var(--ease-out) both;
+}
+
+.panelHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-weight: 800;
+  color: var(--text-dim);
+}
+
+.panelHead button {
+  border: 0;
+  background: var(--bg-3);
+  color: var(--text-dim);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+}

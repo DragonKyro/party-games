@@ -1,0 +1,716 @@
+/* ---- shared bits ---- */
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--c, var(--accent));
+  flex: none;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.error {
+  color: var(--danger);
+  font-weight: 800;
+  text-align: center;
+}
+
+/* ---- score strips ---- */
+.strip {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  padding-bottom: 2px;
+  scrollbar-width: none;
+}
+.strip::-webkit-scrollbar {
+  display: none;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex: none;
+  padding: 6px 10px;
+  border-radius: var(--radius-pill);
+  background: var(--bg-2);
+  border: 2px solid transparent;
+  font-weight: 800;
+  font-size: 0.88rem;
+}
+.chip b {
+  font: 700 1rem/1 var(--font-display);
+  font-variant-numeric: tabular-nums;
+}
+.chipName {
+  max-width: 9ch;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.chipTuner {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 16%, var(--bg-2));
+}
+.chipMe {
+  box-shadow: inset 0 0 0 1.5px var(--c);
+}
+
+.teamStrip {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 8px 14px;
+  border-radius: var(--radius);
+  background: var(--bg-2);
+}
+.teamTotal {
+  display: grid;
+  justify-items: start;
+}
+.teamTotal b {
+  font: 700 1.9rem/1 var(--font-display);
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+.roundDots {
+  flex: 1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: flex-end;
+}
+.roundDot {
+  --p: 0;
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid var(--line-strong);
+  font: 700 0.75rem/1 var(--font-display);
+  color: #2b1500;
+}
+.played {
+  border-color: transparent;
+  background: color-mix(in srgb, var(--accent) calc(25% + var(--p) * 75%), var(--bg-3));
+}
+.current {
+  border-color: var(--accent);
+  animation: global(pg-pulse) 1.4s var(--ease-in-out) infinite;
+}
+
+/* ---- the "now playing" display ---- */
+.np {
+  position: relative;
+  display: grid;
+  gap: 6px;
+  padding: 12px 16px 14px;
+  border-radius: 14px;
+  background:
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.025) 0 2px, transparent 2px 4px),
+    linear-gradient(180deg, #1d1406, #120c04);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 180, 90, 0.35),
+    inset 0 0 24px rgba(255, 140, 40, 0.18),
+    var(--shadow-md);
+  overflow: hidden;
+  animation: global(pg-rise-in) var(--dur-slow) var(--ease-out) both;
+}
+
+.npTop {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font: 800 0.72rem/1 var(--font-ui);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #ffbe7a;
+}
+
+.onAir {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 7px;
+  border-radius: 4px;
+  background: rgba(255, 70, 50, 0.16);
+  color: #ff7a5c;
+}
+.onAir i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #ff4d2e;
+  box-shadow: 0 0 8px #ff4d2e;
+  animation: global(pg-pulse) 1.2s var(--ease-in-out) infinite;
+}
+
+.npKicker {
+  flex: 1;
+}
+
+.eq {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 14px;
+}
+.eq i {
+  width: 3px;
+  height: 100%;
+  background: #ffb35c;
+  transform-origin: bottom;
+  animation: eq 0.9s ease-in-out infinite alternate;
+}
+.eq i:nth-child(2) { animation-delay: -0.3s; animation-duration: 0.7s; }
+.eq i:nth-child(3) { animation-delay: -0.6s; animation-duration: 1.1s; }
+.eq i:nth-child(4) { animation-delay: -0.15s; animation-duration: 0.8s; }
+.eq i:nth-child(5) { animation-delay: -0.45s; animation-duration: 1s; }
+
+@keyframes eq {
+  from { transform: scaleY(0.2); }
+  to { transform: scaleY(1); }
+}
+
+.npClue {
+  margin: 0;
+  font: 600 clamp(1.6rem, 7.5vw, 2.6rem) / 1.1 var(--font-display);
+  color: #ffd29a;
+  text-shadow:
+    0 0 10px rgba(255, 159, 67, 0.75),
+    0 0 26px rgba(255, 120, 40, 0.4);
+  overflow-wrap: anywhere;
+  animation: flicker 900ms steps(1) both;
+}
+
+@keyframes flicker {
+  0% { opacity: 0; }
+  10% { opacity: 0.9; }
+  20% { opacity: 0.2; }
+  30% { opacity: 1; }
+  45% { opacity: 0.55; }
+  60%, 100% { opacity: 1; }
+}
+
+.npSub {
+  margin: 0;
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: #c9a274;
+}
+.npSub span {
+  font-weight: 800;
+}
+
+.timerRow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+/* ---- the Tuner's desk ---- */
+.desk {
+  display: grid;
+  gap: 14px;
+  animation: global(pg-rise-in) var(--dur-slow) var(--ease-out) both;
+}
+
+.deskHead {
+  display: grid;
+  gap: 4px;
+  text-align: center;
+}
+
+.deskTitle {
+  font-size: clamp(1.4rem, 6vw, 2rem);
+}
+
+.freqTag {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 8px;
+  background: #1d1406;
+  color: #ffd29a;
+  text-shadow: 0 0 10px rgba(255, 159, 67, 0.8);
+  box-shadow: inset 0 0 0 1px rgba(255, 180, 90, 0.4);
+  font-variant-numeric: tabular-nums;
+}
+
+.presets {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.preset {
+  display: grid;
+  gap: 4px;
+  padding: 12px;
+  border: 2px solid var(--line-strong);
+  border-radius: var(--radius);
+  background: var(--bg-2);
+  color: var(--text);
+  text-align: left;
+  cursor: pointer;
+  box-shadow: var(--lip);
+  transition: transform var(--dur-fast) var(--ease-out), border-color var(--dur-fast);
+}
+.preset:active {
+  transform: translateY(2px);
+}
+.presetOn {
+  border-color: var(--accent);
+  background:
+    linear-gradient(90deg, color-mix(in srgb, var(--lc) 16%, transparent), color-mix(in srgb, var(--rc) 16%, transparent)),
+    var(--bg-2);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 30%, transparent), var(--lip);
+}
+.presetNum {
+  font: 800 0.7rem/1 var(--font-ui);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+.presetOn .presetNum {
+  color: var(--accent);
+}
+.presetEnds {
+  font: 700 1.05rem/1.2 var(--font-display);
+  overflow-wrap: anywhere;
+}
+
+.clueField {
+  position: relative;
+  display: grid;
+  gap: 6px;
+}
+.clueLabel {
+  font-weight: 800;
+}
+.clueInput {
+  font-size: 1.2rem;
+  padding-right: 60px;
+}
+.counter {
+  position: absolute;
+  right: 12px;
+  bottom: 13px;
+  font: 700 0.8rem/1 var(--font-ui);
+  color: var(--text-faint);
+  font-variant-numeric: tabular-nums;
+}
+
+.deskHint {
+  text-align: center;
+  color: var(--text-dim);
+  font-weight: 600;
+  font-size: 0.92rem;
+}
+
+/* ---- waiting for the Tuner ---- */
+.wait {
+  flex: 1;
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  gap: 14px;
+  text-align: center;
+  padding: 24px 0;
+  animation: global(pg-rise-in) var(--dur-slow) var(--ease-out) both;
+}
+
+.static {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: min(280px, 80vw);
+  height: 120px;
+  border-radius: 18px;
+  overflow: hidden;
+  background: #1a1230;
+  box-shadow:
+    0 0 0 5px #3a271a,
+    0 0 0 7px #5b3d27,
+    var(--shadow-lg);
+}
+.static::before {
+  content: '';
+  position: absolute;
+  inset: -50%;
+  background:
+    repeating-radial-gradient(circle at 17% 32%, rgba(255, 255, 255, 0.16) 0 1px, transparent 1px 3px),
+    repeating-radial-gradient(circle at 73% 61%, rgba(255, 220, 180, 0.12) 0 1px, transparent 1px 4px);
+  animation: static 0.35s steps(4) infinite;
+}
+.static::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: #ff5a36;
+  box-shadow: 0 0 12px #ff5a36;
+  animation: scan 2.6s var(--ease-in-out) infinite alternate;
+}
+.static span {
+  position: relative;
+  z-index: 1;
+  font-size: 48px;
+  animation: global(pg-float) 3s var(--ease-in-out) infinite;
+}
+
+@keyframes static {
+  0% { transform: translate(0, 0); }
+  25% { transform: translate(-6%, 4%); }
+  50% { transform: translate(5%, -3%); }
+  75% { transform: translate(-3%, -6%); }
+  100% { transform: translate(4%, 5%); }
+}
+
+@keyframes scan {
+  from { left: 8%; }
+  to { left: 92%; }
+}
+
+.waitTitle {
+  font-size: clamp(1.5rem, 6.5vw, 2.2rem);
+}
+
+/* ---- guessing ---- */
+.guess {
+  display: grid;
+  gap: 12px;
+  align-content: start;
+}
+
+.fine {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.fineBtn {
+  width: 56px;
+  height: 56px;
+  border: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #6b4a33, #3a271a);
+  color: #ffe1bf;
+  font: 700 1.8rem/1 var(--font-display);
+  box-shadow: 0 4px 0 #22160e, inset 0 1px 0 rgba(255, 255, 255, 0.18);
+  cursor: pointer;
+  touch-action: manipulation;
+}
+.fineBtn:active:not(:disabled) {
+  transform: translateY(3px);
+  box-shadow: 0 1px 0 #22160e;
+}
+.fineBtn:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.readout {
+  min-width: 128px;
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 10px;
+  background: #1d1406;
+  box-shadow: inset 0 0 0 1px rgba(255, 180, 90, 0.35);
+}
+.readoutFreq {
+  font: 700 1.8rem/1 var(--font-display);
+  font-variant-numeric: tabular-nums;
+  color: #ffd29a;
+  text-shadow: 0 0 10px rgba(255, 159, 67, 0.8);
+}
+.readout small {
+  font-weight: 800;
+  color: #c9a274;
+}
+
+.lockBtn {
+  width: 100%;
+  max-width: 420px;
+  justify-self: center;
+}
+
+.lockedNote {
+  text-align: center;
+  font-weight: 800;
+  padding: 10px 14px;
+  border-radius: var(--radius);
+  background: var(--bg-2);
+}
+
+.mover {
+  min-height: 1.4em;
+  text-align: center;
+  font-weight: 700;
+  color: var(--text-dim);
+}
+
+.passHint {
+  text-align: center;
+  font-weight: 700;
+  color: var(--text-dim);
+}
+
+.rosterBox {
+  display: grid;
+  gap: 8px;
+  justify-items: center;
+}
+
+.roster {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+
+.person {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 8px 14px;
+  border: 2px solid color-mix(in srgb, var(--c) 50%, transparent);
+  border-radius: var(--radius-pill);
+  background: var(--bg-2);
+  color: var(--text);
+  font: 800 1rem/1 var(--font-ui);
+  cursor: pointer;
+}
+.person:disabled {
+  cursor: default;
+}
+.personDone {
+  background: color-mix(in srgb, var(--c) 22%, var(--bg-2));
+  border-color: var(--c);
+}
+.check {
+  opacity: 0.8;
+}
+
+/* ---- reveal ---- */
+.reveal {
+  display: grid;
+  gap: 12px;
+}
+
+.after {
+  display: grid;
+  gap: 12px;
+  animation: global(pg-rise-in) var(--dur-slow) var(--ease-out) 1.4s both;
+}
+
+.stationLine {
+  text-align: center;
+  font-weight: 700;
+  color: var(--text-dim);
+}
+.stationLine b {
+  color: #ffd29a;
+  font-family: var(--font-display);
+  text-shadow: 0 0 10px rgba(255, 159, 67, 0.6);
+}
+
+.teamResult {
+  display: grid;
+  justify-items: center;
+  gap: 4px;
+  padding: 14px;
+  border-radius: var(--radius-lg);
+  background: var(--bg-2);
+  text-align: center;
+}
+.bigPts {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+}
+.bigPts > span:first-child {
+  font: 700 3.4rem/1 var(--font-display);
+  color: var(--accent);
+}
+.ptsLabel {
+  font: 600 1.4rem/1.1 var(--font-display);
+}
+.bullseye.teamResult {
+  background: radial-gradient(circle at 50% 0%, color-mix(in srgb, var(--accent) 35%, var(--bg-2)), var(--bg-2) 70%);
+  animation: global(pg-pop) var(--dur-med) var(--ease-spring) 1.5s both;
+}
+
+.results {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 6px;
+}
+
+.resultRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: var(--radius);
+  background: var(--bg-2);
+  border-left: 5px solid var(--c);
+}
+.resultMe {
+  background: color-mix(in srgb, var(--c) 14%, var(--bg-2));
+}
+.resultRow.bullseye {
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 60%, transparent), 0 0 18px color-mix(in srgb, var(--accent) 35%, transparent);
+}
+.resultName {
+  flex: 1;
+  min-width: 0;
+  display: grid;
+  font-weight: 800;
+}
+.resultName small {
+  font-weight: 700;
+  color: var(--text-faint);
+}
+.resultPts {
+  min-width: 2.4ch;
+  text-align: right;
+  font: 700 1.4rem/1 var(--font-display);
+  color: var(--accent);
+}
+.tunerRow {
+  background: transparent;
+  border: 2px dashed var(--line-strong);
+  border-left: 5px dashed var(--c);
+}
+
+/* ---- host controls ---- */
+.hostBar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: auto;
+  padding-top: 10px;
+  border-top: 1px dashed var(--line);
+}
+
+/* ---- results ---- */
+.awards {
+  display: grid;
+  gap: 6px;
+  text-align: center;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.tiers {
+  list-style: none;
+  margin: 0 0 12px;
+  padding: 0;
+  display: grid;
+  gap: 4px;
+}
+.tiers li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+  color: var(--text-faint);
+}
+.tiers li small {
+  margin-left: auto;
+  font-variant-numeric: tabular-nums;
+}
+.tiers .tierOn {
+  background: color-mix(in srgb, var(--accent) 20%, var(--bg-2));
+  color: var(--text);
+  box-shadow: inset 0 0 0 2px var(--accent);
+}
+
+.recap {
+  padding: 12px 14px;
+  border-radius: var(--radius);
+  background: var(--bg-2);
+}
+.recap summary {
+  cursor: pointer;
+  font-weight: 800;
+}
+.recap ol {
+  list-style: none;
+  margin: 10px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.recapRow {
+  display: grid;
+  grid-template-columns: 1fr 34% auto;
+  align-items: center;
+  gap: 10px;
+}
+.recapText {
+  display: grid;
+  min-width: 0;
+}
+.recapText b {
+  overflow-wrap: anywhere;
+}
+.recapText small {
+  color: var(--text-faint);
+  font-weight: 700;
+}
+
+.mini {
+  position: relative;
+  height: 12px;
+  border-radius: 6px;
+  background: linear-gradient(90deg, color-mix(in srgb, var(--lc) 55%, #120c22), #1a1230, color-mix(in srgb, var(--rc) 55%, #120c22));
+}
+.miniTarget {
+  position: absolute;
+  top: -3px;
+  bottom: -3px;
+  width: 3px;
+  margin-left: -1.5px;
+  border-radius: 2px;
+  background: #fff3dc;
+  box-shadow: 0 0 6px rgba(255, 220, 170, 0.9);
+}
+.miniNeedle {
+  position: absolute;
+  top: 2px;
+  width: 8px;
+  height: 8px;
+  margin-left: -4px;
+  border-radius: 50%;
+  background: var(--c);
+  border: 1px solid #120c22;
+}
+.recapPts {
+  font: 700 1.1rem/1 var(--font-display);
+  color: var(--accent);
+}
